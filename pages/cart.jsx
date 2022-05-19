@@ -6,7 +6,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import axios from "axios";
 
 
-export default function cart() {
+export default function Cart() {
   const {items} = useSelector(state=>state.cart)
 
 
