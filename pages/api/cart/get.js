@@ -9,7 +9,7 @@ export default async function getCart({body},res){
 
 export default async function getCart({body},res){
     const snapshot = await database.collection("cart")
-        .doc(body.username)
+        .doc(body.idUser)
         .get()
 
     return res.json(snapshot.data())

@@ -38,35 +38,37 @@ export default function Cart() {
   }
 
   return <Page>
-    <div>
-        <section className="col-span-3">
-          <Car products={items}></Car>
-        </section>
-        <section className="col-span-1 bg-white">
-        <PayPalScriptProvider options={{ "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID }}>
-            <PayPalButtons createOrder={async ()=> {
-              try {
-                const res = await axios({
-                  url:`${process.env.NEXT_PUBLIC_DOMAIN}/api/paypal/createOrder`,
-                  method:'POST',
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                });
-                return res.data.id;
-              } catch (error) {
-                console.log(error)
-              }
-            }} 
-            onCancel={(data) => console.log('compra cancelada')}
-            onApprove={(data, actions) => {
-              console.log(data);
-              actions.order.capture()
-            }}
-            style={{ layout: "vertical" }} />
-          </PayPalScriptProvider>
-        </section>
+    {
+      items.length == 0
+      ?
+      <h1 className="text-center">No hay productos en el carrito</h1>
+      :    
+      <div>
+          <section className="col-span-3">
+            <Car products={items}></Car>
+          </section>
+          <section className="col-span-1 bg-white">
+          <PayPalScriptProvider options={{ "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID }}>
+              <PayPalButtons createOrder={async ()=> {
+                try {
+                  const res = await axios({
+                    url:`${process.env.NEXT_PUBLIC_DOMAIN}/api/paypal/createOrder`,
+                    method:'POST',
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                  });
+                  return res.data.id;
+                } catch (error) {
+                  console.log(error)
+                }
+              }} 
+              onCancel={(data) => console.log('compra cancelada')}
+              onApprove={captureOrder}
+              style={{ layout: "vertical" }} />
+            </PayPalScriptProvider>
+          </section>
       </div>
-      
+    }
   </Page>;
 }

@@ -5,7 +5,7 @@ export const saveCart = createAsyncThunk("cart/saveCart",async (cart,{getState})
 
     const result = await fetch("/api/cart",{
         method:"POST",
-        body:JSON.stringify({username:id,data:{items}}),
+        body:JSON.stringify({idUser:id,data:{items}}),
         headers:{
             "Content-Type":"application/json"
         }
@@ -22,7 +22,7 @@ export const getCart = createAsyncThunk("cart/getCart",async (payload,{getState}
     const {auth:{id}} = getState()
     const result = await fetch("/api/cart/get",{
         method:"POST",
-        body:JSON.stringify({username:id}),
+        body:JSON.stringify({idUser:id}),
         headers:{
             "Content-Type":"application/json"
         }

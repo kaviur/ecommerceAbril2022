@@ -37,7 +37,7 @@ export default function Login({ csrfToken }) {
       >
         <input name="csrfToken" type="hidden" defaultValue={csrfToken} />
         <button
-          className="p-3 rounded bg-teal-700 rounded hover:bg-teal-500 hover:text-gray-300"
+          className="p-3 rounded bg-teal-700 hover:bg-teal-500 hover:text-gray-300"
           type="submit"
         >
           <AiFillGoogleCircle className="w-10 h-10 inline-block" /> Inicia
