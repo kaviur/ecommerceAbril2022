@@ -26,7 +26,6 @@ export default function Cart() {
   //     }
   // },[loading])
 
-
   const createOrder = async () =>{
     const {data} = await axios.post("/api/paypal/createOrder")
     return data.orderID
@@ -48,7 +47,7 @@ export default function Cart() {
             <PayPalButtons createOrder={async ()=> {
               try {
                 const res = await axios({
-                  url:'http://localhost:3000/api/paypal/createOrder',
+                  url:`${process.env.NEXT_PUBLIC_DOMAIN}/api/paypal/createOrder`,
                   method:'POST',
                   headers: {
                     "Content-Type": "application/json",
