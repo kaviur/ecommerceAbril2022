@@ -5,14 +5,19 @@ export default async function saveInvoice({body,method},res){
     if(method==="POST"){
         const userId = body.idUser
         const newInvoice = body.data //debe ser un objeto y viene de la función capture de paypal
-        const invoicesArray = []
+        let invoicesArray = []
 
         const snapshot = await database.collection("invoices").doc(userId).get() // si ya el usuario tiene almenos una factura
 
+        console.log('el estado capture',newInvoice)
+
         if(snapshot.exists){
 
-            invoicesArray = snapshot.data.invoices            
+            invoicesArray = snapshot.data().invoices        
+
+            console.log('data de facturas',snapshot.data().invoices)
             invoicesArray.push(newInvoice)
+            console.log('array pusheándole el estado',invoicesArray)
 
         }else{
             invoicesArray.push(newInvoice)

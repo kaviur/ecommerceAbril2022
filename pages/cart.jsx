@@ -6,6 +6,7 @@ import { PayPalScriptProvider, PayPalButtons, FUNDING } from "@paypal/react-payp
 import axios from "axios";
 import { useEffect } from 'react';
 import { emptyCart, saveCart } from '../features/Cart';
+import { addToInvoices, addToCapture, saveInvoices } from '../features/Payments';
 
 
 export default function Cart() {
@@ -34,12 +35,18 @@ export default function Cart() {
       console.log(data)
       dispatch(emptyCart())
       dispatch(saveCart())
-      return await axios.post("/api/paypal/captureOrder",{orderID:data.orderID})
+      const payCapture = await axios.post("/api/paypal/captureOrder",{orderID:data.orderID})
+      console.log(payCapture)
+      dispatch(addToCapture(payCapture.data))
+      dispatch(addToInvoices(payCapture.data))
+      dispatch(saveInvoices())
+
+      return payCapture      
   }
 
   return <Page>
     {
-      items.length == 0
+      items.length !== 0
       ?
       <h1 className="text-center">No hay productos en el carrito</h1>
       :    

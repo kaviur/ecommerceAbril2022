@@ -1,5 +1,6 @@
 import React,{useEffect} from 'react';
 import { getCart } from '../features/Cart'
+import { getUserInvoices } from '../features/Payments'
 import { useDispatch } from 'react-redux';
 import { useSession } from 'next-auth/react'
 import { login, logout } from '../features/auth'
@@ -12,6 +13,7 @@ export default function Page({ children }) {
   const dispatch = useDispatch();
   const { data: session } = useSession()
 
+  //TODO: verificar si se puede optimizar y si sesion está bien como estado
   useEffect(() => {
     if(session){
       dispatch(login({
@@ -20,6 +22,7 @@ export default function Page({ children }) {
         name:session.user.name
       }))
       dispatch(getCart());
+      dispatch(getUserInvoices());
     }else{
       dispatch(logout())
     }

@@ -12,6 +12,5 @@ export default async function getCart({body},res){
         .doc(body.idUser)
         .get()
 
-        console.log(body.idUser)
     return res.json(snapshot.data())
 }
