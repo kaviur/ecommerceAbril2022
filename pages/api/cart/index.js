@@ -6,7 +6,8 @@ export default async function saveCart({body,method},res){
         .doc(body.idUser)
         .set(body.data)
 
-        console.log(snapshot)
+        console.log("carrito agregado",snapshot)
+        console.log("id user ",body.idUser);
 
         res.json({success:true})
     }

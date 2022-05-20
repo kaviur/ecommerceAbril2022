@@ -26,7 +26,7 @@ export default NextAuth({
                 token.id = account.providerAccountId
                 const snapshot = await database.collection("users").doc(account.providerAccountId).get()
                 if(snapshot.exists){
-                    user = snapshot.data()
+                    const user = snapshot.data()
                     console.log(user);
                     if(user.role){
                         token.role = user.role
@@ -50,6 +50,7 @@ export default NextAuth({
                 session.user.id = token.id
                 session.user.role = token.role
                 session.user.mail = token.email
+                
             }
             return session
         }
