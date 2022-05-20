@@ -3,6 +3,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 export const saveCart = createAsyncThunk("cart/saveCart",async (cart,{getState})=>{
     const {cart:{items},auth:{id}} = getState()
 
+    console.log(id);
+
     const result = await fetch("/api/cart",{
         method:"POST",
         body:JSON.stringify({idUser:id,data:{items}}),

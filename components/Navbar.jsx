@@ -9,6 +9,7 @@ import {GiShoppingBag} from 'react-icons/gi';
 
 export default function Navbar() {
   const {items:cart} = useSelector((state)=>state.cart)
+  const id = useSelector((state)=>state.auth.id)
   const { data: session } = useSession()
 
   return (
@@ -23,6 +24,9 @@ export default function Navbar() {
           </label>
         </Link>
         <ul className="flex justify-between">
+          <li>
+            el id es: {id}
+          </li>
           <li>
             <Link href="/cart">
               <a>{session ? <div className='flex'> <img className='w-6 h-6 rounded rounded-lg mr-1' alt='perfil-name' src={session.user.image}></img><p>{session.user.name}</p> </div> : <></>}</a>

@@ -2,7 +2,7 @@ import React,{useEffect} from 'react';
 import { getCart } from '../features/Cart'
 import { useDispatch } from 'react-redux';
 import { useSession } from 'next-auth/react'
-import { login } from '../features/auth'
+import { login, logout } from '../features/auth'
 import Footer from './Footer';
 import Navbar from './Navbar';
 import NavMenu from './NavMenu';
@@ -13,13 +13,17 @@ export default function Page({ children }) {
   const { data: session } = useSession()
 
   useEffect(() => {
-    dispatch(getCart());
-    dispatch(login({
-      id:session.user.id,
-      email:session.user.email,
-      name:session.user.name
-    }))
-  }, []);
+    if(session){
+      dispatch(login({
+        id:session.user.id,
+        email:session.user.email,
+        name:session.user.name
+      }))
+      dispatch(getCart());
+    }else{
+      dispatch(logout())
+    }
+  }, [session]);
 
   return (
     <div>
