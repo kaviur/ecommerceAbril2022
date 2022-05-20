@@ -32,6 +32,7 @@ yarn-error.log*
 .env
 # vercel
 .vercel
+la_captura.js
 
 #credenciales firebase
 /database/credentials.json
