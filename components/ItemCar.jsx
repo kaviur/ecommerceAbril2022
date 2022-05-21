@@ -1,31 +1,33 @@
 import React, {useState} from 'react';
 import { motion } from "framer-motion"
 import { useDispatch } from 'react-redux';
-import { addToCart, removeFromCart,reduceFromCart,saveCart } from '../features/Cart';
+import { addToCart, removeFromCart,reduceFromCart,saveCart,setAmount } from '../features/Cart';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus, faTrash } from '@fortawesome/free-solid-svg-icons';
 
 
 
 export default function ItemCar({product}) {
-  const [amount, setAmount] = useState(false)
   const dispatch = useDispatch()
 
   const agregarCarrito = () => {
     dispatch(addToCart(product))
+    dispatch(setAmount(product.price*product.cantidad))
     dispatch(saveCart())
-    setAmount(true)
   }
 
   const removerDelCarrito = () => {
     dispatch(removeFromCart(product))
+    dispatch(setAmount(product.price*product.cantidad))
     dispatch(saveCart())
   }
 
   const reducirDelCarrito= () =>{
     dispatch(reduceFromCart(product))
+    dispatch(setAmount(product.price*product.cantidad))
     dispatch(saveCart())
-}
+  }
+
 
   return (
     <motion.article
