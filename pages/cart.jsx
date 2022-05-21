@@ -5,13 +5,23 @@ import Page from '../components/Page';
 import { PayPalScriptProvider, PayPalButtons, FUNDING } from "@paypal/react-paypal-js";
 import axios from "axios";
 import { useEffect } from 'react';
-import { emptyCart, saveCart } from '../features/Cart';
+import { emptyCart, saveCart, setAmount } from '../features/Cart';
 import { addToInvoices, addToCapture, saveInvoices } from '../features/Payments';
 
 
 export default function Cart() {
+  const {items,amount} = useSelector(state=>state.cart)
+
+  useEffect(() => {
+    let allSubtotals = []
+    items.forEach(item=>{
+      allSubtotals.push(item.price*item.cantidad)
+    })
+    let total = allSubtotals.reduce((a,b)=>a+b,0)
+    dispatch(setAmount(total))
+  }, [items])
+    
   
-  const {cart:{items}} = useSelector(state=>state)
   const dispatch = useDispatch()
 
   // useEffect(()=>{
@@ -36,9 +46,11 @@ export default function Cart() {
       dispatch(emptyCart())
       dispatch(saveCart())
       const payCapture = await axios.post("/api/paypal/captureOrder",{orderID:data.orderID})
-      console.log(payCapture)
-      dispatch(addToCapture(payCapture.data))
-      dispatch(addToInvoices(payCapture.data))
+      const invoice = {...payCapture.data,items}
+
+      console.log(invoice)
+      dispatch(addToCapture(invoice))
+      dispatch(addToInvoices(invoice))
       dispatch(saveInvoices())
 
       return payCapture      
@@ -46,13 +58,14 @@ export default function Cart() {
 
   return <Page>
     {
-      items.length !== 0
+      items.length == 0
       ?
       <h1 className="text-center">No hay productos en el carrito</h1>
       :    
       <div>
           <section className="col-span-3">
             <Car products={items}></Car>
+            <h1>Total a pagar: {amount}</h1>
           </section>
           <section className="col-span-1 bg-white">
           <PayPalScriptProvider options={{ "client-id": process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID }}>
@@ -64,6 +77,10 @@ export default function Cart() {
                     headers: {
                       "Content-Type": "application/json",
                     },
+                    data: {
+                      amount: amount,
+                      items: items
+                    }
                   });
                   return res.data.id;
                 } catch (error) {

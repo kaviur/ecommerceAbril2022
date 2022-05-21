@@ -41,6 +41,7 @@ const cartSlice = createSlice({
     initialState:{
         loading:false,
         error:false,
+        amount:0,
         items:[]
     },
     reducers:{
@@ -56,6 +57,9 @@ const cartSlice = createSlice({
             }
             
             // Redux toolkit hace esto por detrás setState({...state})
+        },
+        setAmount:(state,action)=>{
+            state.amount = action.payload
         },
         removeFromCart:(state,{payload})=>{
             state.items = state.items.filter(product=>product.id!==payload.id)
@@ -100,4 +104,4 @@ const cartSlice = createSlice({
 const cartReducer = cartSlice.reducer
 export default cartReducer
 
-export const {addToCart,removeFromCart,reduceFromCart,emptyCart} = cartSlice.actions
+export const {addToCart,removeFromCart,reduceFromCart,emptyCart,setAmount} = cartSlice.actions

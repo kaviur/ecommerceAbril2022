@@ -1,5 +1,6 @@
 import paypal from '@paypal/checkout-server-sdk'
 //import client from '../../../libs/paypal_client'
+//import {useSelector} from 'react-redux'
 
 // Creating an environment
 let clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID;
@@ -10,6 +11,10 @@ let environment = new paypal.core.SandboxEnvironment(clientId, clientSecret);
 let client = new paypal.core.PayPalHttpClient(environment);
 
 export default async function pay(req,res){
+
+    //const {items,amount} = useSelector(state=>state.cart)
+    const {items,amount} = req.body
+
     if(req.method === 'POST'){
         const request = new paypal.orders.OrdersCreateRequest()
         request.requestBody({
@@ -23,7 +28,7 @@ export default async function pay(req,res){
                     "soft_descriptor": "HighFashions",
                     "amount": {
                         "currency_code": "USD",
-                        "value": "220.00",
+                        "value": amount,
                         "breakdown": {
                             "item_total": {
                                 "currency_code": "USD",

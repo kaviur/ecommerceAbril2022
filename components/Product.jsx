@@ -1,20 +1,21 @@
 import React, {useState} from 'react';
 import { motion } from "framer-motion"
 import { useDispatch } from 'react-redux';
-import { addToCart,saveCart } from '../features/Cart';
+import { addToCart,saveCart,setAmount } from '../features/Cart';
 import NextLink from "next/link"
 
 import { useSession} from "next-auth/react"
 
 export default function Product({product}) {
-  const [amount, setAmount] = useState(false)
+  //const [amount, setAmount] = useState(false)
   const dispatch = useDispatch()
   const { data: session } = useSession()
 
   const agregarCarrito = () => {
     dispatch(addToCart(product))
+    //dispatch(setAmount(product.price))
     dispatch(saveCart())
-    setAmount(true)
+    //setAmount(true)
   }
 
   return (

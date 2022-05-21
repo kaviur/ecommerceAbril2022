@@ -19,7 +19,7 @@ export const saveInvoices = createAsyncThunk("invoice/saveInvoice",async (paymen
     return data
 })
 
-
+//obtener todas las facturas de un usuario comprador
 export const getUserInvoices = createAsyncThunk("invoices/userInvoices",async (payload,{getState})=>{
     const {auth:{id}} = getState()
     const result = await fetch("/api/invoices/get_user_invoices",{
@@ -44,13 +44,10 @@ const paymentSlice = createSlice({
         error:false,
         payment_capture:{},
         invoices:[],
-        numOfInvoices:0
     },
     reducers:{
         addToInvoices:(state,action)=>{
-            state.invoices.push(action.payload) //agrego una nueva factura a las facturas extraídas de la db
-            state.numOfInvoices +=1
-            
+            state.invoices.push(action.payload) //agrego una nueva factura a las facturas extraídas de la db            
         },
         addToCapture:(state,action)=>{
             state.payment_capture = action.payload
